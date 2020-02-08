@@ -1,0 +1,32 @@
+<!--components/search/search.wxml-->
+<!-- <view class="search-view">
+    <view class="retailStore">
+      <navigator class="posBtn" url="" open_type="navigate" hover-class="none">
+        <icon type="search" size="14" color='#F0250F' style='width:30rpx; height:30rpx;float:left;margin-top:7pt;color:#63CE64;margin-right:10rpx' />
+        <text class='m-bbt' style="color:#777;">搜索订单</text>
+      </navigator>
+      <text class="a-iconfont icon-saoyisao qdcode" style="color:#888;" bindtap="_scanCode"></text>
+    </view>
+    <view class="heard">
+      <annex-shop selected_shopid="{{sh_id}}"  bind:selected_callback="district_callback" has_selected_callback="{{true}}"></annex-shop>
+    </view>
+  </view> -->
+  <view style="flex-grow: 0;">
+      <form class="search-form">
+          <view class="search-box">
+              <view class="input-box">
+                  <view class='flex-row pull-down' bindtap='pullDown'>
+                      <view class='cat'>订单号:</view>
+                  </view>
+
+                  <view style="width: 75%">
+                      <input style="width: 100%" confirm-type="search" class="search-input" auto-focus="true" bindconfirm="_inputConfirm" bindfocus="inputFocus" bindblur="_inputBlur"/> 
+                      <!-- bindblur="inputBlur" -->
+                  </view>
+              </view>
+              <view>
+                  <view class="search-cancel" bindtap="_inputCon">搜索</view>
+              </view>
+          </view>
+      </form>
+  </view>

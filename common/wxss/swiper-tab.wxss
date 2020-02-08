@@ -1,0 +1,53 @@
+/* tab栏 */
+.swiper-tab {
+  width: 100%;
+  border-bottom: 2rpx solid #ccc;
+  background: white;
+  text-align: center;
+  height: 88rpx;
+  line-height: 88rpx;
+  display: flex;
+  flex-flow: row;
+  overflow-x: scroll;
+  /* justify-content: space-around; */
+}
+
+.swiper-tab-item {
+  /* width: 30%; */
+  flex:1;
+  min-width: 200rpx;
+  color: #434343;
+}
+/* .swiper-tab-item .title{
+  text-align: center;
+  position: relative;
+} */
+
+.active {
+  color: #ff7256 !important;
+  font-weight: 700;
+  border-bottom: 4rpx solid #ff7256;
+}
+
+.swiper-tab-item .num-icon {
+  position: absolute;
+  /* top: 8rpx; */
+  /* left: 80%; *//* margin-left: 12rpx; */
+  display: inline-block;
+  background: #f00;
+  color: #fff;
+  border-radius: 999rpx;
+  font-size: 7pt;
+  height: 30rpx;
+  line-height: 30rpx;
+  white-space: nowrap;
+  min-width: 30rpx;
+  text-align: center;
+  padding-left: 4rpx;
+  padding-right: 4rpx;
+}
+
+swiper {
+  text-align: center;
+  height: 100%;
+}

@@ -1,0 +1,5 @@
+/* pages/setting/setting.wxss */
+.button {
+  padding: 20rpx 0;
+  border: 1rpx solid #ccc;
+}

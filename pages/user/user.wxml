@@ -1,0 +1,59 @@
+<!--pages/user/user.wxml-->
+<view>
+  <view class="user-info">
+    <view class="flex-row">
+      <view class="shop-img">
+        <image src="{{user.binding_shop.pic_url}}"></image>
+      </view>
+      <view style="margin-top: 30rpx;">
+        <view user>{{user.name}}</view>
+        <view>{{user.binding_shop.name}}</view>
+        <view>{{user.binding_shop.mobile}}</view>
+        <!-- <view>{{user}}</view> -->
+      </view>
+
+    </view>
+  </view>
+  <view class="swiper-tab" style="margin-top:320rpx; background: #363636;   position: fixed;  top:0; z-index:10;">
+    <view class="swiper-tab-item">
+      <view class="title" style="color: #fff;">
+        已完成订单
+      </view>
+    </view>
+    <!-- <view class="swiper-tab-item {{selected == 'self'? 'active':''}}" bindtap="changeSel" data-type="self" data-type_id="0">
+      <view class="title">
+        自提订单
+        <text wx:if="{{selfList.length > 0}}" class="num-icon">{{selfList.length}}</text>
+      </view>
+    </view> -->
+  </view>
+  <view style="margin-top:430rpx;">
+
+    <view class="order-warp" wx:for="{{list}}" wx:key="order_id">
+      <view class="head">
+        <view class="head flex-row flex-y-center">
+          <text class="index">{{index+1}}</text>
+          <view class="sn">单号：{{item.o_number}}</view>
+        </view>
+      </view>
+      <view class="info-box">
+        <view class="note">
+          <text class="title">操作时间: </text>
+          <text>{{item.b_time}}</text>
+        </view>
+        <view class="note">
+          <view style="float:left;" wx:if="{{item.next_s != '结束'}}">
+            <text class="title">下一步: </text>
+            <text>{{item.next_s}}</text>
+          </view>
+          <view style="float:right;">
+            <text class="title">状态: </text>
+            <text>{{item.state_wl}}</text>
+          </view>
+
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>

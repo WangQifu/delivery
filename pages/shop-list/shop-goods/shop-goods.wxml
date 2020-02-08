@@ -1,0 +1,74 @@
+<!--index.wxml-->
+<view class="container">
+  <view wx:if="{{detail}}">
+    <view class="distributionMessage ">
+      <view class="Title2">
+        <view class="title">订单信息</view>
+      </view>
+      <view class="messages">
+        <view class="time">订单编号</view>
+        <view class="type">{{detail.order.id}}</view>
+      </view>
+      <view class="messages">
+        <view class="time">订单时间</view>
+        <view class="type">{{detail.order.pay_time}}</view>
+      </view>
+      <!-- <view class="messages">
+        <view class="time">客户</view>
+        <view class="type flex-grow-1">{{}}张**（先生）（尾号1234）</view>
+        <view class="flex-grow-0">
+          <text class="iconfont icon-bodadianhua" bindtap="callPhone" data-phone="{{detail.order.mobile}}"></text>
+        </view>
+      </view>
+      <view class="messages">
+        <view class="time">地址</view>
+        <view class="type">{{order.shop.address}}兴义桔山大道喀斯特</view>
+      </view>
+      <view class="messages">
+        <view class="time">服务</view>
+        <view class="type">{{}}</view>
+      </view>
+      <view class="messages">
+        <text class="time" space="ensp">备注</text>
+        <view class="type">{{}}123</view>
+      </view> -->
+    </view>
+
+    <view class="orderMessage">
+      <view class="Title">
+        <text class="title">商品详情（共{{detail.order.order_goods.length}}件商品）</text>
+      </view>
+      <view class="food" wx:for="{{detail.order.order_goods}}" wx:key="{{item.id}}">
+        <view class="list">
+          <view class="listLeft">
+            <view class="foodPic">
+              <image src="{{item.pic_url}}"></image>
+            </view>
+            <view class="flex-grow-1 flex-col">
+              <view class="flex-grow-1">
+                <view class="goods-name">
+                  {{item.name}}
+                </view>
+                <view class='num'>
+                  {{item.attr.attr_name}} {{'x'+item.num}}
+                </view>
+                <view class='price'>
+                  ￥{{item.total_price}}
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="smallBorder">
+        <view class="orherPrice">
+          <text class="lightcolor">已优惠<text style="color:#F00;">¥{{detail.order.coupon_total_price}}</text></text>
+          <text style="font-size:36rpx;color:#F00;">¥{{detail.order.pay_price}}</text>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+</view>

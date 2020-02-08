@@ -1,0 +1,35 @@
+<!--index.wxml-->
+
+<view class="header-nav">
+  <block wx:for="{{tabBars}}" wx:key="index">
+    <view class="nav-item {{index === tabIndex?'nav-item-active':''}}" data-current="{{index}}" bindtap="tabTab">{{item.name}}</view>
+  </block>
+</view>
+<view class="container">
+  <view>
+    <view class="swiper-content">
+      <swiper class="swiper-box" current="{{tabIndex}}" duration="300" bindchange="changeTab">
+        <swiper-item>
+          <scroll-view scroll-y style="height: 100%;" bindscrolltolower="loadMore">
+            <view class="shop-list">
+              <!-- <block wx:for="{{shopRecordList}}"> -->
+              <view class="shop-item">
+                <view class="shop-item-top">
+                  <view class="item-text">订单编号：{{item.shop.name}}</view>
+                  <view class="item-text">下单时间：{{item.shop.city + item.shop.area + item.shop.address}}</view>
+                  <view class="item-text">完成时间：{{item.recv_quatity}}</view>
+                  <view class="item-text">状态：{{item.recv_at}}准时送达</view>
+                </view>
+                <view class="shop-item-right">
+                  <navigator class="blue-button link-btn" url="/pages/mine/shop-detail/shop-detail?shopId={{item.id}}" hover-class="none">查看详情</navigator>
+                </view>
+              </view>
+              <!-- </block> -->
+            </view>
+          </scroll-view>
+        </swiper-item>
+      </swiper>
+    </view>
+
+  </view>
+</view>

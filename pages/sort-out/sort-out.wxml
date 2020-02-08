@@ -1,0 +1,103 @@
+<!--pages/sort-out/sort-out.wxml-->
+<wxs module="analy">
+  var getSum = function(goodsArray) {
+    var sum = 0;
+    for (var i = 0; i < goodsArray.length; ++i) {
+      sum += Number(goodsArray[i].num);
+    }
+    return sum;
+  }
+  module.exports.getSum = getSum;
+</wxs>
+
+<template name="order-sort-out">
+  <view class="order-warp" wx:for="{{list}}" wx:key="order_id">
+    <view class="head">
+      <view class="head flex-row flex-y-center">
+        <text class="index">{{index+1}}</text>
+        <view class="sn">单号：{{item.o_number}}</view>
+      </view>
+      <view class="count-item">商品
+        <text style="font-weight:600;"> {{item.od_list.length}} </text>种共
+        <text class="count"> {{analy.getSum(item.od_list)}} </text>件
+      </view>
+    </view>
+    <!-- <view class=""> -->
+    <!-- <checkbox-group bindchange="" style="margin-right:-10rpx;"> -->
+    <view class="goods-box">
+      <view class="goods-item flex-y-center" wx:for="{{item.od_list}}" wx:key='goods_id' wx:for-item="goods" style="{{isRightHand?'flex-direction:row-reverse;':''}}">
+        <!-- <checkbox color="#56a5ff" value="{{index}}"></checkbox> -->
+        <view class="flex-row flex-y-center" style="flex:1;">
+          <view class="index">{{index+1}}</view>
+          <image src="{{goods.pic}}"></image>
+          <view class="goods-info flex-col">
+            <view class="goods-name">{{goods.name}}</view>
+            <view><text>规格：</text>{{goods.attr_array.attr_name}}</view>
+            <view class="goods-num">价格：
+              <text style="color:#ff7256;"> {{goods.total_price}} </text>
+            </view>
+            <view class="goods-num">数量：x
+              <text style="font-size:50rpx; font-weight：600; color:#ff7256;"> {{goods.num}} </text> {{goods.unit}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <!-- </checkbox-group> -->
+    <view class="info-box">
+      <view wx:if="{{item.address}}" class="addr">地址：{{item.address}}</view>
+      <view class="note" wx:for="{{item.order_form}}" wx:key='id' wx:for-item="note">
+        <text class="title">{{note.key}}: </text>
+        <text>{{note.value}}</text>
+      </view>
+    </view>
+    <!-- </view> -->
+    <view class="ok-btn" bindtap="orderSend" data-index="{{index}}" data-order_id="{{item.order_id}}" data-lid="{{item.l_id}}" data-no="{{item.o_number}}" data-ordertype="{{item.order_type}}" data-offline="0">备货完成</view>
+
+  </view>
+</template>
+
+<!-- 页面代码 -->
+<view>
+  <!-- <search bindsearch="searchKey" /> -->
+  <!-- <button bindtap="shaoCode">扫码</button> -->
+  <view class="swiper-tab">
+    <view class="swiper-tab-item {{selected == 'delivery'? 'active':''}}" bindtap="changeSel" data-type="delivery" data-type_id="0">
+      <!-- <view class="title"> -->
+      配送订单
+      <text wx:if="{{deliveryList.length > 0}}" class="num-icon">{{deliveryList.length}}</text>
+      <!-- </view> -->
+    </view>
+    <view class="swiper-tab-item {{selected == 'self'? 'active':''}}" bindtap="changeSel" data-type="self" data-type_id="0">
+      <!-- <view class="title"> -->
+      自提订单
+      <text wx:if="{{selfList.length > 0}}" class="num-icon">{{selfList.length}}</text>
+      <!-- </view> -->
+    </view>
+  </view>
+  <!-- <checkbox-group bindchange="checkHandChange" style="text-align: center;">
+    <checkbox value="r" checked="{{isRightHand}}" style="margin: 20rpx;">右手操作</checkbox>
+  </checkbox-group> -->
+  <!-- <view wx:for="{{orderList}}" wx:key="order_id">
+      <sort-out bind:sort="sortOK" order="{{item}}" index="{{index}}"/>
+  </view> -->
+  <view wx:if="{{selected == 'delivery'}}">
+    <template is="order-sort-out" data="{{list:deliveryList,isRightHand:isRightHand}}"></template>
+  </view>
+  <view wx:elif="{{selected == 'self'}}">
+    <template is="order-sort-out" data="{{list:selfList,isRightHand:isRightHand}}"></template>
+    <!-- <view wx:for="{{selfList}}" wx:key="order_id">
+      <view bindtap="orderSend" data-index="{{index}}" data-order_id="{{item.order_id}}" data-lid="{{item.l_id}}" data-no="{{item.o_number}}" data-ordertype="{{item.order_type}}" data-offline="1">{{item.order_id}}</view>
+    </view> -->
+  </view>
+  <!-- <view class="order-warp">
+    <view class="head">
+      <view class="rtop-btn" bindtap="drop">{{isDrop?'收起':'展开'}}</view>
+      <view class="sn">单号：{{order.order.order_no}}</view>
+    </view>
+    <view class="" wx:for="{{goods_list}}" wx:key="goods_id">{{item.goods_id}}</view>
+    <button class="btn" bindtap="sortOK">备货完成</button>
+  </view> -->
+  <view wx:if="{{!isScrollTop}}" class="goto-top" bindtap="gotoTop">返回顶部</view>
+</view>

@@ -1,0 +1,403 @@
+<!--index.wxml-->
+
+<view class="swiper-tab">
+  <view class="swiper-tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="clickTab">
+    待抢单
+    <view wx:if="{{shopListNum > 0}}" class="num-icon">
+      <text>{{shopListNum}}</text>
+    </view>
+  </view>
+  <view class="swiper-tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="clickTab">
+    待送达
+    <text>({{orderList.length}})</text>
+  </view>
+  <view class="swiper-tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="clickTab">
+    个人中心
+  </view>
+</view>
+
+<!-- <swiper current="{{currentTab}}" duration="300" bindchange="swiperTab">
+  <swiper-item><view>全部</view>
+  <swiper-item><view>提现中</view></swiper-item>
+  <swiper-item><view>已提现</view></swiper-item>
+</swiper> -->
+
+<view class="container">
+  <swiper current="{{currentTab}}" bindchange="swiperTab">
+    <swiper-item item-id="0">
+      <scroll-view scroll-y style="height: 100%;" bindscrolltolower="onScrollBottom">
+        <view class="shop-list">
+          <block wx:if="{{shopList.length > 0 && orderList.length > 0}}" wx:for="{{shopList}}" wx:key="index" wx:for-item="item">
+            <view class="shop-item clearfix">
+              <!-- <image class="goods-image" src="{{item.logo}}"></image> -->
+              <!-- mode="widthFix" -->
+              <view class="shop-item-info">
+                <view class="shop-item-top">
+                  <view class="shop-money">
+                    ￥{{item.express_price}}
+                    <text class="order-time"> 下单时间：{{item.addtime}}</text>
+                  </view>
+                  <view class="shop-time">
+                    {{item.delivery_time}}
+                  </view>
+
+                </view>
+                <view class="shop-item-center">
+                  <view class="shop-location">
+                    {{item.address_dis}}
+                    <text class="shop-location-text" space="nbsp">  {{item.address}}</text>
+                    <text wx:if="{{item.user_level > 0}}" class="shop-vip-icon">VIP</text>
+                  </view>
+                  <view class="shop-status"></view>
+                </view>
+                <!-- <view>{{item.status == 1?'营业':(item.status == 2?'休息':'冻结')}}</view> -->
+                <view class="shop-item-bottom">
+                  <!-- wx:if="{{item.status == 0}}" -->
+                  <view wx:if="{{item.nearbyList.length > 0}}" class="blue-button link-btn" bindtap="logNearby" data-index="{{index}}" data-order_no="{{item.order_no}}" data-order_type="{{item.order_type}}">
+                    附近订单({{item.nearbyList.length}})
+                  </view>
+                  <view class="blue-button link-btn" bindtap="orderModal" data-index="{{index}}">
+                    抢单
+                  </view>
+                </view>
+                <view class="order-item">
+                  <navigator url="./shop-goods/shop-goods?id={{item.id}}&type={{item.order_type}}">
+                    <view class="goods-list">
+                      <view class="goods-item flex-row" wx:for="{{item.order_goods}}" wx:for-item="order" wx:for-index="i" wx:key="{{order.id}}" hidden='{{i > 0 && item.degs==0}}'>
+                        <view class="flex-grow-0" style="overflow: visible">
+                          <image class="goods-pic" mode="aspectFill" src="{{item.order_goods[i].pic_url}}" />
+                        </view>
+                        <view class="flex-grow-1 flex-col">
+                          <view class="flex-grow-1">
+                            <view class="goods-name">
+                              {{item.order_goods[i].name}}
+                            </view>
+                            <view class='num'>
+                              {{item.order_goods[i].attr.attr_name}} {{'x'+item.order_goods[i].num}}
+                            </view>
+                            <view class='price'>
+                              ￥{{item.order_goods[i].total_price}}
+                            </view>
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </navigator>
+                  <view wx:if="{{item.order_goods.length > 1}}" catchtap="rotateShop" class="flex-grow-1 count-down" data-index="{{index}}">
+                    <text>共 {{item.order_goods.length}} 件商品</text>
+                    <view style='transform:rotate({{item.degs}}deg);transition:all 0.8s'></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{orderList.length == 0}}" wx:for="{{shopSimpleList}}" wx:key="index" wx:for-item="item">
+            <view class="shop-item clearfix">
+              <!-- <image class="goods-image" src="{{item.logo}}"></image> -->
+              <!-- mode="widthFix" -->
+              <view class="shop-item-info">
+                <view class="shop-item-top">
+                  <view class="shop-money">
+                    <text class="order-time"> 下单时间：{{item.addtime}}</text>
+                  </view>
+                  <view class="shop-time">
+                    {{item.delivery_time}}
+                  </view>
+
+                </view>
+                <!-- <view class="shop-item-center">
+                  <view class="shop-location">
+                    {{item.address_dis}}
+                    <text class="shop-location-text" space="nbsp">  {{item.address}}</text>
+                    <text wx:if="{{item.user_level > 0}}" class="shop-vip-icon">VIP</text>
+                  </view>
+                  <view class="shop-status"></view>
+                </view> -->
+                <!-- <view>{{item.status == 1?'营业':(item.status == 2?'休息':'冻结')}}</view> -->
+                <view class="shop-item-bottom">
+                  <!-- wx:if="{{item.status == 0}}" -->
+                  <view class="blue-button link-btn" bindtap="orderModal" data-index="{{index}}">
+                    抢单
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </swiper-item>
+    <swiper-item>
+      <scroll-view scroll-y style="height: 100%;">
+        <view class="shop-list">
+          <block wx:for="{{orderList}}" wx:key="index" wx:for-item="item">
+            <view class="shop-item">
+              <view wx:if="{{deliveryUser.id == item.logistic.s_user_id && item.logistic.transfer_job.id != deliveryUser.id && item.logistic.accept_transfer == 0 && item.logistic.transfer_job.id}}" data-index="{{index}}" data-cancel="true" bindtap="transferOrder">
+                订单已转交给【{{item.logistic.transfer_job.name}}】，待对方确认
+                <text class="connect-cancel">取消转单</text>
+              </view>
+              <view wx:elif="{{deliveryUser.id == item.logistic.s_user_id && item.logistic.transfer_job.id != deliveryUser.id && item.logistic.accept_transfer == 1}}" data-index="{{index}}" data-cancel="true" bindtap="transferOrder">
+                对方拒绝转单请求，请重新选择
+                <text class="connect-cancel">取消转单</text>
+              </view>
+              <view wx:if="{{deliveryUser.id != item.logistic.s_user_id && deliveryUser.id == item.logistic.transfer_job.id}}" class="transfer">
+                来自【{{item.logistic.send_user_name}}】的转接订单
+                <text class="connect-cancel" data-order_id="{{item.order.id}}" data-transfer="0" catchtap="handleTransfer">接单</text>
+                <text class="connect-red" data-order_id="{{item.order.id}}" data-transfer="1" catchtap="handleTransfer">拒绝</text>
+              </view>
+              <view class="shop-item-top">
+                <view class="shop-money">
+                  <icon wx:if="{{item.logistic.is_urgent > 0}}" type="warn" /> ￥{{item.order.express_price}}
+                  <text class="shop-order-id"> 订单:{{item.order.order_no}}</text>
+                  <text wx:if="{{item.order.order_type > 0}}" class="shop-order-group" space="nbsp">拼团</text>
+                </view>
+                <view wx:if="{{item.user_time.type == 'default'}}" class="shop-time {{item.user_time.is_over?'shop-timeout':''}}">
+                  {{item.user_time.is_over?'已超时'+item.user_time.show_time+'分钟':'剩余'+item.user_time.when+'分钟'}}
+                </view>
+                <view wx:elif="{{item.user_time.type == 'user_set'}}" class="shop-time {{item.user_time.is_over?'shop-timeout':''}}">
+                  预定{{item.user_time.countdown}}前送达
+                </view>
+              </view>
+              <view class="shop-item-center">
+                <view class="shop-location">
+                  {{item.order.address_data.dist}}km
+                  <text class="shop-location-text" space="nbsp">  {{item.order.simple_address}}</text>
+                  <text class="iconfont icon-daohang" bindtap="navigation" data-la="{{item.order.address_data.latitude}}" data-lo="{{item.order.address_data.longitude}}" data-address="{{item.order.address}}"></text>
+                  <view class="order-name">
+                    <text>{{item.order.user_name}} (尾号{{item.order.tail_mobile}}) </text>
+                    <text wx:if="{{item.order.user_level > 0}}" class="order-vip-icon">VIP</text>
+                    <text class="iconfont icon-lingsheng-jingyin" catchtap="orderHelp" data-index="{{index}}"></text>
+                    <text class="iconfont icon-paizhao" catchtap="sendMessage"></text>
+                  </view>
+                </view>
+              </view>
+              <view wx:if="{{item.order.order_forms['选择服务'] !== '无'}}" class="order-item-right">
+                服务：{{item.order.order_forms['选择服务']}}
+              </view>
+              <view wx:if="{{item.order.order_forms['买家备注'] !== ''}}" class="order-item-right">
+                备注：{{item.order.order_forms['买家备注']}}
+              </view>
+              <view class="order-item-bottom">
+                <button class="order-phone" bindtap="callPhone" data-phone="{{item.order.mobile}}">打电话</button>
+                <picker catchtap="getOrderList" bindchange="transferOrder" value="{{index}}" range="{{transferList}}" range-key="{{'name_num'}}" data-index="{{index}}">
+                  <button class="order-message">转单</button>
+                </picker>
+                <button class="order-message" bindtap="logNearby" data-index="{{index}}">附近({{item.nearbyList.length}})</button>
+                <button wx:if="{{item.logistic.s_type == 2}}" class="order-arrive {{item.logistic.b_type == 1?'blue-button':'not-ready-button'}}" bindtap="{{item.logistic.b_type == 1?'takeOrder':'cannotTakeOrder'}}" data-index="{{index}}">取货</button>
+                <button wx:if="{{item.logistic.s_type == 0}}" class="order-arrive {{item.logistic.s_type == 0?'blue-button':'not-ready-button'}}" bindtap="haveReached" data-index="{{index}}">确认送达</button>
+              </view>
+
+
+              <view class="order-item">
+                <navigator url="./shop-goods/shop-goods?id={{item.order.id}}&type={{item.order.order_type}}">
+                  <view class="goods-list">
+                    <view class="goods-item flex-row" wx:for="{{item.order.order_goods}}" wx:for-item="order" wx:for-index="i" wx:key="{{order.id}}" hidden='{{i > 0 && item.order.degs==0}}'>
+                      <view class="flex-grow-0" style="overflow: visible">
+                        <image class="goods-pic" mode="aspectFill" src="{{item.order.order_goods[i].pic_url}}" />
+                      </view>
+                      <view class="flex-grow-1 flex-col">
+                        <view class="flex-grow-1">
+                          <view class="goods-name">
+                            {{item.order.order_goods[i].name}}
+                          </view>
+                          <view class='num'>
+                            {{item.order.order_goods[i].attr.attr_name}} {{'x'+item.order.order_goods[i].num}}
+                          </view>
+                          <view class='price'>
+                            ￥{{item.order.order_goods[i].total_price}}
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </view>
+                </navigator>
+                <view wx:if="{{item.order.order_goods.length > 1}}" catchtap="rotateAnim" class="flex-grow-1 count-down" data-index="{{index}}">
+                  <text>共 {{item.order.order_goods.length}} 件商品</text>
+                  <view style='transform:rotate({{item.order.degs}}deg);transition:all 0.8s'></view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </swiper-item>
+    <swiper-item>
+      <view class="wrap-content">
+        <view class="wrap-content-inner">
+          <view class="user-info">
+            <view class="user-image">
+              <image mode="widthFix" src="{{wxUserInfo.avatarUrl ? wxUserInfo.avatarUrl : '/images/index/profile.png'}}"></image>
+            </view>
+            <view class="shop-name">{{deliveryUser.name}}</view>
+            <view class="user-name">账号:{{deliveryUser.phone}} </view>
+            <text class="change-password" catchtap="changePassword">修改密码</text>
+            <navigator class="today-order" url="/pages/mine/shop-record/shop-record">
+              <view class='flex-grow-0 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>今日完成单</view>
+                  </view>
+                </view>
+              </view>
+            </navigator>
+            <navigator class="month-order">
+              <view class='flex-grow-0 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>月度完成单</view>
+                  </view>
+                </view>
+              </view>
+            </navigator>
+          </view>
+          <view class="user-item-list">
+            <view class='wallet flex-row'>
+              <view class='flex-grow-0 wallet-2 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>好评</view>
+                  </view>
+                </view>
+              </view>
+              <view class='flex-grow-0 wallet-2 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>差评</view>
+                  </view>
+                </view>
+              </view>
+
+            </view>
+            <view class="wallet flex-row">
+              <view class='flex-grow-0 wallet-2 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>服务</view>
+                  </view>
+                </view>
+              </view>
+              <view class='flex-grow-0 wallet-2 flex-x-center flex-y-center'>
+                <view class='flex-grow-1 flex-y-center flex-col'>
+                  <view class='num-1 flex-x-center'>0</view>
+                  <view class='flex-row num-2 flex-x-center'>
+                    <view class='flex-grow-0'>转交</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+</view>
+
+<block wx:if="{{isShowConfirm}}">
+  <view class='toast-box'>
+    <view class='toastbg'></view>
+    <view class='showToast'>
+      <view class='toast-title'>
+        <text>修改密码</text>
+      </view>
+      <view class='toast-main'>
+        <view class='toast-input'>
+          <input type='password' placeholder='输入新密码' bindinput='setValue' data-name='stuEidtName'></input>
+        </view>
+      </view>
+      <view class='toast-button'>
+        <view class='button1'>
+          <button catchtap='cancel'>取消</button>
+        </view>
+        <view class='button2'>
+          <button data-password="{{walletPsd}}" catchtap='confirmAcceptance'>确定</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</block>
+
+<block wx:if="{{isShowNearby}}">
+  <view class='logistics g_transition3s {{logistics? "g_scale1" : "g_scale0"}}' >
+    <view class="Block">
+      <view class="orderTitle">
+        附近订单
+        <icon type="clear" size="20" catchtap="logNearby"/>
+      </view>
+      <scroll-view scroll-y style="height:450px">
+        <view class="shop-list">
+          <block wx:for="{{currentTab == 0?shopList[nearby_index].nearbyList:orderList[nearby_index].nearbyList}}" wx:key="index" wx:for-item="item">
+            <view class="shop-item clearfix">
+              <!-- <image class="goods-image" src="{{item.logo}}"></image> -->
+              <!-- mode="widthFix" -->
+              <view class="shop-item-info">
+                <view class="shop-item-top">
+                  <view class="shop-money">
+                    ￥{{item.express_price}}
+                    <text class="order-time"> 下单时间：{{item.addtime}}</text>
+                  </view>
+                  <view class="shop-time">
+                    {{item.delivery_time}}
+                  </view>
+
+                </view>
+                <view class="shop-item-center">
+                  <view class="shop-location">
+                    {{item.address_dis}}
+                    <text class="shop-location-text" space="nbsp">  {{item.address}}</text>
+                    <text wx:if="{{item.user_level > 0}}" class="shop-vip-icon">VIP</text>
+                  </view>
+                  <view class="shop-status"></view>
+                </view>
+                <!-- <view>{{item.status == 1?'营业':(item.status == 2?'休息':'冻结')}}</view> -->
+                <view class="shop-item-bottom">
+                  <!-- wx:if="{{item.status == 0}}" -->
+                  <view class="blue-button link-btn" bindtap="orderModal" data-index="{{index}}">
+                    抢单
+                  </view>
+                </view>
+                <view class="order-item">
+                  <navigator url="./shop-goods/shop-goods?id={{item.id}}&type={{item.order_type}}">
+                    <view class="goods-list">
+                      <view class="goods-item flex-row" wx:for="{{item.order_goods}}" wx:for-item="order" wx:for-index="i" wx:key="{{order.id}}" hidden='{{i > 0 && item.degs==0}}'>
+                        <view class="flex-grow-0" style="overflow: visible">
+                          <image class="goods-pic" mode="aspectFill" src="{{item.order_goods[i].pic_url}}" />
+                        </view>
+                        <view class="flex-grow-1 flex-col">
+                          <view class="flex-grow-1">
+                            <view class="goods-name">
+                              {{item.order_goods[i].name}}
+                            </view>
+                            <view class='num'>
+                              {{item.order_goods[i].attr.attr_name}} {{'x'+item.order_goods[i].num}}
+                            </view>
+                            <view class='price'>
+                              ￥{{item.order_goods[i].total_price}}
+                            </view>
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </navigator>
+                  <view wx:if="{{item.order_goods.length > 1}}" class="flex-grow-1 count-down" data-index="{{index}}" data-list="{{shopList[nearby_index].nearbyList}}">
+                    <text>共 {{item.order_goods.length}} 件商品</text>
+                    <view style='transform:rotate({{item.degs}}deg);transition:all 0.8s'></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</block>
+
+<audio src="https://www.redouya.com/addons/zjhj_mall/core/web/statics/voice/5611.wav" id="qiangdan" ></audio>
+<audio src="https://www.redouya.com/addons/zjhj_mall/core/web/statics/voice/GrabSuccess.wav" id="grabSuccess" ></audio>
+<audio src="https://www.redouya.com/addons/zjhj_mall/core/web/statics/voice/取货成功.wav" id="quhuo" ></audio>
+<audio src="https://www.redouya.com/addons/zjhj_mall/core/web/statics/voice/订单已成功送达.wav" id="songda" ></audio>
+<audio src="https://www.redouya.com/addons/zjhj_mall/core/web/statics/voice/新的转接订单.wav" id="zhuandan" ></audio>

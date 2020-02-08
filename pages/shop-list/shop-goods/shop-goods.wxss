@@ -1,0 +1,154 @@
+@import '/style/iconfont/iconfont.wxss';
+/**index.wxss**/
+
+page {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.icon-bodadianhua {
+  color: #3c9ce8;
+  font-size: 40rpx;
+}
+
+.orderMessage {
+  background: white;
+}
+
+.Title {
+  padding: 20rpx 40rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.food {
+  padding: 0 40rpx;
+  border-top: 2rpx #ddd solid;
+}
+.list {
+  border-top: 2rpx #ddd solid;
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 0;
+}
+.list:first-child {
+  border-top: 0;
+}
+.list image{
+  width: 140rpx;
+  height: 140rpx;
+  margin-right: 20rpx;
+}
+.listLeft {
+  display: flex;
+  align-items: center;
+}
+.message>text {
+  display: block;
+  line-height: 60rpx;
+}
+.oldPrice {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 28rpx;
+}
+.price {
+  color:#F53030;
+}
+.listRight {
+  margin-top: 20rpx;
+  color: #999;
+}
+.icon-pag {
+  color: #f53030;
+}
+.text {
+  color: #333;
+}
+.orherPrice {
+  display: flex;
+  padding: 30rpx 40rpx;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2rpx solid #ddd;
+}
+
+.smallBorder {
+  padding: 0 20rpx;
+}
+.smallBorder .orherPrice {
+  padding: 20rpx;
+}
+.orherPrice .icon-more:after {
+  margin-left: 20rpx;
+  color: #666;
+}
+.lightcolor {
+  color: #999;
+  font-size: 26rpx;
+}
+.calling {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2rpx #ddd solid;
+  padding: 30rpx 40rpx;
+}
+.S_P {
+  display: flex;
+  align-items: center;
+}
+.calling image {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+.distributionMessage {
+  margin-top: 20rpx;
+  background: white;
+}
+
+
+.Title2 {
+  padding: 0 40rpx;
+  border-bottom: 2rpx #ddd solid;
+}
+.Title2 .title {
+  padding: 20rpx 0;
+}
+.messages {
+  display: flex;
+  padding: 20rpx 40rpx;
+}
+.time {
+  width: 200rpx;
+  color: #999;
+}
+
+.goods-name {
+  margin-bottom: 10rpx;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.price {
+  font-size: 22rpx;
+  color: #ff4544;
+}
+
+.num {
+  font-size: 22rpx;
+  color: #888;
+}

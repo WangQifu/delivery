@@ -1,0 +1,47 @@
+<!--pages/home/home.wxml-->
+<view wx:if="{{job_type == 1}}" class="article">
+
+
+  <!-- <navigator url="/pages/order/management/management">领订单</navigator>
+  <navigator style="background:#888;">入库</navigator>
+  <navigator url="/pages/sort-out/sort-out">备货中</navigator>
+  <navigator style="background:#888;">报损</navigator>
+  <navigator style="background:#888;">售后</navigator> -->
+
+  <!-- 采购入库，退货入库（含报废，根据单号及配送退货退款）， -->
+  <view>
+    <view class="saoma" bindtap="saoYiSao"><text>扫一扫</text></view>
+    <navigator style="background:#888;">
+      <text>入库</text>
+    </navigator>
+    <navigator style="background:#888;">
+      <text>报损</text>
+    </navigator>
+  </view>
+  <view>
+    <navigator style="background:#888;">
+      <text></text>
+    </navigator>
+    <navigator url="/pages/user/user" style="line-height:50rpx;">
+      <text>个人\n中心</text>
+    </navigator>
+    <navigator style="background:#888;">
+      <text></text>
+    </navigator>
+  </view>
+  <view>
+    <navigator url="/pages/order/management/management">
+      <text>领订单</text>
+    </navigator>
+    <navigator url="/pages/sort-out/sort-out">
+      <text>备货中</text>
+    </navigator>
+    <navigator style="background:#888;">
+      <text>售后</text>
+    </navigator>
+  </view>
+
+  <!-- <view wx:if="{{job_type == 1}}">
+<navigator url="/pages/shop-list/shop-list"  open-type="switchTab">配送端</navigator>
+</view> -->
+</view>

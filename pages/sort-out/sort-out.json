@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "备货中订单",
+  "usingComponents": {
+    "search": "/components/search/search"
+  }
+}
